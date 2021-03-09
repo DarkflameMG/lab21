@@ -2,6 +2,8 @@
 #include<cmath>
 using namespace std;
 
+#define PI 3.14159265
+
 class ComplexNumber{				
 	public:
 		double real;
@@ -28,7 +30,85 @@ ComplexNumber ComplexNumber::operator-(const ComplexNumber &c){
 	return ComplexNumber(real-c.real,imag-c.imag);
 }
 
+ComplexNumber ComplexNumber::operator*(const ComplexNumber &c){
+	return ComplexNumber(real*c.real-imag*c.imag,real*c.imag+imag*c.real);
+}
+
+ComplexNumber ComplexNumber::operator/(const ComplexNumber &c){
+	return ComplexNumber((real*c.real+imag*c.imag)/(c.real*c.real+c.imag*c.imag),(-real*c.imag+c.real*imag)/(c.real*c.real+c.imag*c.imag));
+}
+
+bool ComplexNumber::operator==(const ComplexNumber &c)
+{
+	if(real==c.real and imag==c.imag)
+		return true;
+	return false;
+}
+
+bool operator==(double s,const ComplexNumber &c)
+{
+	if(s==c.real and 0==c.imag)
+		return true;
+	return false;
+}
 //Write your code here
+
+ComplexNumber operator+(double s,const ComplexNumber &c)
+{
+	return ComplexNumber(s+c.real,c.imag);
+}
+
+ComplexNumber operator-(double s,const ComplexNumber &c)
+{
+	return ComplexNumber(s-c.real,-c.imag);
+}
+
+ComplexNumber operator*(double s,const ComplexNumber &c)
+{
+	return ComplexNumber(s*c.real,s*c.imag);
+}
+
+ComplexNumber operator/(double s,const ComplexNumber &c)
+{
+	return ComplexNumber((s*c.real)/(c.real*c.real+c.imag*c.imag),(-s*c.imag)/(c.real*c.real+c.imag*c.imag));
+}
+
+double ComplexNumber::abs()
+{
+	double x,y;
+	x = pow(real,2);
+	y = pow(imag,2);
+	return sqrt(x+y);
+}
+
+double ComplexNumber::angle()
+{
+	double O;
+	O = atan(imag/real) * 180/ PI;
+	if(imag < 0 and real < 0)
+	{
+		O-=180;
+	}
+	else if(real < 0)
+	{
+		O = 180+O;
+	}
+	return O;
+}
+
+ostream & operator<<(ostream &os, const ComplexNumber &c)
+{
+	if(c.real==0 and c.imag!=0)
+		return os << c.imag << 'i';
+	else if(c.real!=0 and c.imag==0)
+		return os << c.real;
+	else if(c.imag < 0)
+		return os << c.real << c.imag << 'i';
+	else if(c.imag==0 and c.real==0)
+		return os << '0';
+	else
+		return os << c.real << '+' << c.imag << 'i';
+}
 
 int main(){
 	ComplexNumber a(1.5,2),b(3.2,-2.5),c(-1,1.2);	
